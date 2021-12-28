@@ -4,33 +4,34 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Logo from './components/Logo';
 import Cards from './components/Cards';
 import Btn from './components/Btn';
-
+import {Button} from 'react-bootstrap';
+import {useEffect, useState} from 'react';
 
 
 function App() {
-  return (
-    // <div className="App">
-    //   <header className="App-header">
-    //     <img src={logo} className="App-logo" alt="logo" />
-    //     <p>
-    //       Edit <code>src/App.js</code> and save to reload.
-    //     </p>
-    //     <a
-    //       className="App-link"
-    //       href="https://reactjs.org"
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //     >
-    //       Learn React
-    //     </a>
-    //   </header>
-    // </div>
+  const [personaje, setPersonaje] = useState({});
 
-    <div className='bg-info py-5'>
+  useEffect(()=>{
+    consultarAPI();
+  },[])
+
+  const consultarAPI = async() =>{
+    const respuesta = await fetch('https://thesimpsonsquoteapi.glitch.me/quotes');
+    const dato = await respuesta.json();
+    console.log(respuesta)
+    console.log(dato[0])
+    setPersonaje(dato[0])
+  }
+
+  return (
+    <div className='bg-info py-5 '>
       {/* <img src={logo} alt="logo" /> */}
       <Logo></Logo>    
-      <Btn></Btn>
-      <Cards></Cards>
+      {/* <Btn consultarAPI = {consultarAPI}></Btn> */}
+      <div className='text-center my-5'>
+      <Button variant="warning" size='' type='submit'className='px-5' onClick={()=> consultarAPI()}>Obtener Frase</Button>
+      </div>
+      <Cards personaje={personaje} ></Cards>
     </div>
     
   );
